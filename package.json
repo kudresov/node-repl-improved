@@ -4,6 +4,7 @@
   "description": "",
   "main": "repl.js",
   "dependencies": {
+    "express": "^4.16.2",
     "ora": "^1.4.0",
     "ramda": "^0.25.0"
   },

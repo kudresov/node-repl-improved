@@ -27,10 +27,12 @@ replServer = repl.start({
   writer
 });
 
+const snakeToCamel = s => s.replace(/(\-\w)/g, m => m[1].toUpperCase());
+
 replServer.defineCommand('install', {
   help: 'Install npm module',
   action(moduleName) {
-    const npm = spawn('npm', ['install', 'ramda', '--save', '--silent']);
+    const npm = spawn('npm', ['install', moduleName, '--save', '--silent']);
     const spinner = ora(`Installing ${moduleName}`).start();
 
     npm.stdout.on('data', data => {
@@ -47,6 +49,9 @@ replServer.defineCommand('install', {
         return;
       }
       spinner.succeed(`${moduleName} has been installed successfully!`);
+      const varName = snakeToCamel(moduleName);
+      replServer.context[moduleName] = require(moduleName);
+      console.log(`Module has been loaded as \`${varName}\``);
       replServer.clearBufferedCommand();
       replServer.displayPrompt();
     });
