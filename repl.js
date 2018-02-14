@@ -15,7 +15,7 @@ function writer(output) {
     return util.inspect(output.format(), {
       showHidden: false,
       depth: 5,
-      colors: true
+      colors: true,
     });
   }
 
@@ -24,7 +24,7 @@ function writer(output) {
 
 console.log('Welcome to improved REPL');
 replServer = repl.start({
-  writer
+  writer,
 });
 
 const snakeToCamel = s => s.replace(/(\-\w)/g, m => m[1].toUpperCase());
@@ -32,7 +32,7 @@ const snakeToCamel = s => s.replace(/(\-\w)/g, m => m[1].toUpperCase());
 replServer.defineCommand('install', {
   help: 'Install npm module',
   action(moduleName) {
-    const npm = spawn('npm', ['install', moduleName, '--save', '--silent']);
+    const npm = spawn('npm', ['install', moduleName, '--silent']);
     const spinner = ora(`Installing ${moduleName}`).start();
 
     npm.stdout.on('data', data => {
@@ -55,5 +55,29 @@ replServer.defineCommand('install', {
       replServer.clearBufferedCommand();
       replServer.displayPrompt();
     });
-  }
+  },
+});
+
+replServer.defineCommand('repo', {
+  help: 'Open repo github page',
+  action(moduleName) {
+    const npm = spawn('npm', ['repo', moduleName]);
+
+    npm.stdout.on('data', data => {
+      console.log(data.toString('utf8'));
+    });
+
+    npm.stderr.on('data', data => {
+      console.log(data.toString('utf8'));
+    });
+
+    npm.on('close', code => {
+      if (code !== 0) {
+        console.log(`Error opening repo, status code: ${code}`);
+        return;
+      }
+      replServer.clearBufferedCommand();
+      replServer.displayPrompt();
+    });
+  },
 });
