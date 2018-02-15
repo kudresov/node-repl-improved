@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 const repl = require('repl');
 const util = require('util');
 const { spawn } = require('child_process');
@@ -15,7 +16,7 @@ function writer(output) {
     return util.inspect(output.format(), {
       showHidden: false,
       depth: 5,
-      colors: true,
+      colors: true
     });
   }
 
@@ -24,7 +25,7 @@ function writer(output) {
 
 console.log('Welcome to improved REPL');
 replServer = repl.start({
-  writer,
+  writer
 });
 
 const snakeToCamel = s => s.replace(/(\-\w)/g, m => m[1].toUpperCase());
@@ -55,7 +56,7 @@ replServer.defineCommand('install', {
       replServer.clearBufferedCommand();
       replServer.displayPrompt();
     });
-  },
+  }
 });
 
 replServer.defineCommand('repo', {
@@ -79,5 +80,5 @@ replServer.defineCommand('repo', {
       replServer.clearBufferedCommand();
       replServer.displayPrompt();
     });
-  },
+  }
 });
