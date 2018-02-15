@@ -1,17 +1,15 @@
 {
-  "name": "i-repl",
-  "version": "1.0.0",
-  "description": "",
+  "name": "node-repl-improved",
+  "version": "0.0.1",
+  "description": "An improved version of node repl",
   "main": "repl.js",
   "dependencies": {
-    "express": "^4.16.2",
-    "ora": "^1.4.0",
-    "ramda": "^0.25.0"
+    "ora": "^1.4.0"
   },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Vitalij Kudresov",
   "license": "ISC"
 }
