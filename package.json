@@ -3,16 +3,20 @@
   "version": "0.0.2",
   "description": "An improved version of node repl",
   "main": "repl.js",
+  "repository": {
+    "url": "https://github.com/kudresov/node-repl-improved"
+  },
   "dependencies": {
     "ora": "^1.4.0"
   },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "patch-release": "npm version patch && npm publish && git push --follow-tags"
+    "patch-release":
+      "npm version patch && npm publish && git push --follow-tags"
   },
   "bin": {
-    "repl": "./repl.js"
+    "repl": "./bin/repl.js"
   },
   "author": "Vitalij Kudresov",
   "license": "ISC"
