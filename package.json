@@ -1,6 +1,6 @@
 {
   "name": "node-repl-improved",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "An improved version of node repl",
   "main": "repl.js",
   "repository": {
@@ -12,8 +12,7 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "patch-release":
-      "npm version patch && npm publish && git push --follow-tags"
+    "patch-release": "npm version patch && npm publish && git push --follow-tags"
   },
   "bin": {
     "repl": "./bin/repl.js"
