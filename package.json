@@ -1,6 +1,6 @@
 {
   "name": "node-repl-improved",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "An improved version of node repl",
   "main": "repl.js",
   "repository": {
@@ -19,10 +19,12 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "patch-release":
-      "npm version patch && npm publish && git push --follow-tags"
+    "patch-release": "npm version patch && npm publish && git push --follow-tags"
   },
-  "keywords": ["repl", "node"],
+  "keywords": [
+    "repl",
+    "node"
+  ],
   "homepage": "https://github.com/kudresov/node-repl-improved",
   "bugs": {
     "url": "https://github.com/kudresov/node-repl-improved/issues"
