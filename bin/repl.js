@@ -25,6 +25,7 @@ function writer(output) {
 }
 
 console.log('Welcome to improved REPL');
+console.log('Run .help to get the list of all commands');
 replServer = repl.start({
   writer
 });
@@ -34,6 +35,13 @@ const snakeToCamel = s => s.replace(/(\-\w)/g, m => m[1].toUpperCase());
 replServer.defineCommand('install', {
   help: 'Install npm module',
   action(moduleName) {
+    if (!moduleName) {
+      console.warn(
+        'No module specified. Run `.install npm-module-name` to install a module'
+      );
+      return;
+    }
+
     if (loadedModules.includes(moduleName)) {
       console.log(
         `${moduleName} has been already loaded. You can access it as ${snakeToCamel(
@@ -41,7 +49,7 @@ replServer.defineCommand('install', {
         )}`
       );
       replServer.clearBufferedCommand();
-      replServer.displayPrompt();
+      replServer.displayPrompt('1 + 1');
       return;
     }
     const npm = spawn('npm', [
@@ -69,10 +77,9 @@ replServer.defineCommand('install', {
       spinner.succeed(`${moduleName} has been installed successfully!`);
       loadedModules.push(moduleName);
       const varName = snakeToCamel(moduleName);
-      replServer.context[moduleName] = require(moduleName);
-      console.log(`Module has been loaded as \`${varName}\``);
       replServer.clearBufferedCommand();
       replServer.displayPrompt();
+      replServer.write(`const ${varName} = require('${moduleName}');`);
     });
   }
 });
@@ -102,6 +109,9 @@ replServer.defineCommand('repo', {
 });
 
 replServer.on('exit', () => {
+  if (!loadedModules.length) {
+    process.exit();
+  }
   const spinner = ora('Cleaning up before exit').start();
 
   const npm = spawn('npm', [
