@@ -4,6 +4,7 @@ import * as repl from 'repl';
 import * as util from 'util';
 import { spawn } from 'child_process';
 import * as ora from 'ora';
+import * as chalk from 'chalk';
 
 const loadedModules: string[] = [];
 
@@ -25,7 +26,15 @@ function writer(output: any) {
   return util.inspect(output, { colors: true });
 }
 
-console.log('Welcome to improved REPL');
+console.log(
+  (chalk as any).blue(`
+                __                            __     __                                          __ 
+.-----.-----.--|  .-----.   .----.-----.-----|  |   |__.--------.-----.----.-----.--.--.-----.--|  |
+|     |  _  |  _  |  -__|   |   _|  -__|  _  |  |   |  |        |  _  |   _|  _  |  |  |  -__|  _  |
+|__|__|_____|_____|_____|   |__| |_____|   __|__|   |__|__|__|__|   __|__| |_____|\\___/|_____|_____|
+                                       |__|                     |__|                                
+`)
+);
 console.log('Run .help to get the list of all commands');
 replServer = repl.start({
   writer
@@ -86,6 +95,13 @@ replServer.defineCommand('install', {
 replServer.defineCommand('repo', {
   help: 'Open repo github page',
   action(moduleName: string) {
+    if (!moduleName) {
+      console.warn(
+        'No module specified. Run `.repo npm-module-name` to open module homepage'
+      );
+      return;
+    }
+
     const npm = spawn('npm', ['repo', moduleName]);
 
     npm.stdout.on('data', data => {
@@ -99,6 +115,36 @@ replServer.defineCommand('repo', {
     npm.on('close', code => {
       if (code !== 0) {
         console.log(`Error opening repo, status code: ${code}`);
+        return;
+      }
+      replServer.displayPrompt();
+    });
+  }
+});
+
+replServer.defineCommand('find', {
+  help: 'Search npm registry',
+  action(searchTerm: string) {
+    if (!searchTerm) {
+      console.log(
+        'No search term. Run `.find search-term` to search for npm module'
+      );
+      return;
+    }
+
+    const npm = spawn('npm', ['find', '--long', searchTerm]);
+
+    npm.stdout.on('data', data => {
+      console.log(data.toString());
+    });
+
+    npm.stderr.on('data', data => {
+      console.log(data.toString());
+    });
+
+    npm.on('close', code => {
+      if (code !== 0) {
+        console.log(`Error searching npm, status code: ${code}`);
         return;
       }
       replServer.displayPrompt();
