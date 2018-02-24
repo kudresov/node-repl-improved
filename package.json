@@ -1,6 +1,6 @@
 {
   "name": "node-repl-improved",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "An improved version of node repl",
   "main": "./dist/index.js",
   "repository": {
