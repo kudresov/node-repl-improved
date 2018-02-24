@@ -5,6 +5,7 @@ import * as util from 'util';
 import { spawn } from 'child_process';
 import * as ora from 'ora';
 import * as chalk from 'chalk';
+import * as path from 'path';
 
 const loadedModules: string[] = [];
 
@@ -39,6 +40,13 @@ console.log('Run .help to get the list of all commands');
 replServer = repl.start({
   writer
 });
+
+const tempNodeModulesPath = path.join(__dirname, 'node_modules');
+
+// Because repl bin can be invoked anywhere it's module resolution will be set to the folder where it was invoked
+// however because we want for our pre-installed modules to take precedence we add them to paths so when require()
+// we first look in the tempNodeModulesPath
+replServer.context.module.paths = [tempNodeModulesPath, ...module.paths];
 
 const snakeToCamel = (s: string) =>
   s.replace(/(\-\w)/g, m => m[1].toUpperCase());
