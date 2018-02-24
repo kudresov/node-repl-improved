@@ -1,6 +1,6 @@
 {
   "name": "node-repl-improved",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "An improved version of node repl",
   "main": "index.js",
   "repository": {
@@ -28,10 +28,12 @@
     "pre-install": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "echo 'run `repl` to start node-repl-improved'",
-    "patch-release":
-      "npm version patch && npm publish && git push --follow-tags"
+    "patch-release": "npm version patch && npm publish && git push --follow-tags"
   },
-  "keywords": ["repl", "node"],
+  "keywords": [
+    "repl",
+    "node"
+  ],
   "homepage": "https://github.com/kudresov/node-repl-improved",
   "bugs": {
     "url": "https://github.com/kudresov/node-repl-improved/issues"
