@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 
-const repl = require('repl');
-const util = require('util');
-const { spawn } = require('child_process');
-const ora = require('ora');
-const loadedModules = [];
+import * as repl from 'repl';
+import * as util from 'util';
+import { spawn } from 'child_process';
+import * as ora from 'ora';
 
-let replServer;
+const loadedModules: string[] = [];
 
-function writer(output) {
+let replServer: repl.REPLServer;
+
+function writer(output: any) {
   if (!output) {
     return;
   }
@@ -30,11 +31,12 @@ replServer = repl.start({
   writer
 });
 
-const snakeToCamel = s => s.replace(/(\-\w)/g, m => m[1].toUpperCase());
+const snakeToCamel = (s: string) =>
+  s.replace(/(\-\w)/g, m => m[1].toUpperCase());
 
 replServer.defineCommand('install', {
   help: 'Install npm module',
-  action(moduleName) {
+  action(moduleName: string) {
     if (!moduleName) {
       console.warn(
         'No module specified. Run `.install npm-module-name` to install a module'
@@ -48,8 +50,7 @@ replServer.defineCommand('install', {
           moduleName
         )}`
       );
-      replServer.clearBufferedCommand();
-      replServer.displayPrompt('1 + 1');
+      // replServer.clearBufferedCommand();
       return;
     }
     const npm = spawn('npm', [
@@ -62,11 +63,11 @@ replServer.defineCommand('install', {
     const spinner = ora(`Installing ${moduleName}`).start();
 
     npm.stdout.on('data', data => {
-      console.log(data.toString('utf8'));
+      console.log(data.toString());
     });
 
     npm.stderr.on('data', data => {
-      spinner.fail(data.toString('utf8'));
+      spinner.fail(data.toString());
     });
 
     npm.on('close', code => {
@@ -77,7 +78,7 @@ replServer.defineCommand('install', {
       spinner.succeed(`${moduleName} has been installed successfully!`);
       loadedModules.push(moduleName);
       const varName = snakeToCamel(moduleName);
-      replServer.clearBufferedCommand();
+      // replServer.clearBufferedCommand();
       replServer.displayPrompt();
       replServer.write(`const ${varName} = require('${moduleName}');`);
     });
@@ -86,15 +87,15 @@ replServer.defineCommand('install', {
 
 replServer.defineCommand('repo', {
   help: 'Open repo github page',
-  action(moduleName) {
+  action(moduleName: string) {
     const npm = spawn('npm', ['repo', moduleName]);
 
     npm.stdout.on('data', data => {
-      console.log(data.toString('utf8'));
+      console.log(data.toString());
     });
 
     npm.stderr.on('data', data => {
-      console.log(data.toString('utf8'));
+      console.log(data.toString());
     });
 
     npm.on('close', code => {
@@ -102,7 +103,7 @@ replServer.defineCommand('repo', {
         console.log(`Error opening repo, status code: ${code}`);
         return;
       }
-      replServer.clearBufferedCommand();
+      // replServer.clearBufferedCommand();
       replServer.displayPrompt();
     });
   }
