@@ -50,7 +50,6 @@ replServer.defineCommand('install', {
           moduleName
         )}`
       );
-      // replServer.clearBufferedCommand();
       return;
     }
     const npm = spawn('npm', [
@@ -78,7 +77,6 @@ replServer.defineCommand('install', {
       spinner.succeed(`${moduleName} has been installed successfully!`);
       loadedModules.push(moduleName);
       const varName = snakeToCamel(moduleName);
-      // replServer.clearBufferedCommand();
       replServer.displayPrompt();
       replServer.write(`const ${varName} = require('${moduleName}');`);
     });
@@ -103,7 +101,6 @@ replServer.defineCommand('repo', {
         console.log(`Error opening repo, status code: ${code}`);
         return;
       }
-      // replServer.clearBufferedCommand();
       replServer.displayPrompt();
     });
   }
