@@ -1,5 +1,7 @@
-# Overview
-This is an improved version of the default node repl.
+# Node repl loop with integrated NPM
+This is an improved version of the default node repl it has integrated npm and better formatting.
+
+![install repo](http://g.recordit.co/CsdTB7aDAY.gif)
 
 # Installing and running
 To install simply run `npm i -g node-repl-improved`. After it's installed you can invoke it by running `repl`.
